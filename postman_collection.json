@@ -1,0 +1,219 @@
+{
+	"info": {
+		"_postman_id": "a8f5b9e9-3b7c-4b6f-8a7b-9c9d8e7f6a5b",
+		"name": "Pruebas API Cuentas de Depósito",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CT-001: Consulta Exitosa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"numCuenta\");",
+							"    pm.expect(pm.response.text()).to.include(\"nombreProducto\");",
+							"    pm.expect(pm.response.text()).to.include(\"nombreCliente\");",
+							"    pm.expect(pm.response.text()).to.include(\"tarjetaDebito\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"numCliente\": \"18903792891\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ms-d-testing-deposito-cuentas-principal-stg.apps.test-project-ia.v49u.p1.openshiftapps.com/api/public/v1/cuentas/deposito/cliente",
+					"protocol": "http",
+					"host": [
+						"ms-d-testing-deposito-cuentas-principal-stg",
+						"apps",
+						"test-project-ia",
+						"v49u",
+						"p1",
+						"openshiftapps",
+						"com"
+					],
+					"path": [
+						"api",
+						"public",
+						"v1",
+						"cuentas",
+						"deposito",
+						"cliente"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CT-002: Cliente No Numérico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"numCliente\": \"ABCDEFGHIJK\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ms-d-testing-deposito-cuentas-principal-stg.apps.test-project-ia.v49u.p1.openshiftapps.com/api/public/v1/cuentas/deposito/cliente",
+					"protocol": "http",
+					"host": [
+						"ms-d-testing-deposito-cuentas-principal-stg",
+						"apps",
+						"test-project-ia",
+						"v49u",
+						"p1",
+						"openshiftapps",
+						"com"
+					],
+					"path": [
+						"api",
+						"public",
+						"v1",
+						"cuentas",
+						"deposito",
+						"cliente"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CT-003: Cuerpo Vacío",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ms-d-testing-deposito-cuentas-principal-stg.apps.test-project-ia.v49u.p1.openshiftapps.com/api/public/v1/cuentas/deposito/cliente",
+					"protocol": "http",
+					"host": [
+						"ms-d-testing-deposito-cuentas-principal-stg",
+						"apps",
+						"test-project-ia",
+						"v49u",
+						"p1",
+						"openshiftapps",
+						"com"
+					],
+					"path": [
+						"api",
+						"public",
+						"v1",
+						"cuentas",
+						"deposito",
+						"cliente"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CT-004: Sin Campo numCliente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"otroCampo\": \"otroValor\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ms-d-testing-deposito-cuentas-principal-stg.apps.test-project-ia.v49u.p1.openshiftapps.com/api/public/v1/cuentas/deposito/cliente",
+					"protocol": "http",
+					"host": [
+						"ms-d-testing-deposito-cuentas-principal-stg",
+						"apps",
+						"test-project-ia",
+						"v49u",
+						"p1",
+						"openshiftapps",
+						"com"
+					],
+					"path": [
+						"api",
+						"public",
+						"v1",
+						"cuentas",
+						"deposito",
+						"cliente"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

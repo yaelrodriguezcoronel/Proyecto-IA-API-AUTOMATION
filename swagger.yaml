@@ -1,0 +1,41 @@
+openapi: 3.0.0
+info:
+  title: API de Cuentas de Depósito
+  description: API para consultar las cuentas de débito de un cliente.
+  version: 1.0.0
+servers:
+  - url: http://ms-d-testing-deposito-cuentas-principal-stg.apps.test-project-ia.v49u.p1.openshiftapps.com
+paths:
+  /api/public/v1/cuentas/deposito/cliente:
+    post:
+      summary: Consultar cuentas de débito de un cliente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                numCliente:
+                  type: string
+                  example: "18903792891"
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  numCuenta:
+                    type: string
+                    example: "1992883009"
+                  nombreProducto:
+                    type: string
+                    example: "CUENTA DEBITO"
+                  nombreCliente:
+                    type: string
+                    example: "Yael Isay Rodriguez Coronel"
+                  tarjetaDebito:
+                    type: string
+                    example: "8374637263839483"

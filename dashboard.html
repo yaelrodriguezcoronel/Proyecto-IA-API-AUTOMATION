@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Pruebas de API</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .chart-container {
+            width: 100%;
+            height: 400px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dashboard de Pruebas de API</h1>
+    <div class="container">
+        <div class="chart-container">
+            <canvas id="statusChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="typeChart"></canvas>
+        </div>
+    </div>
+    <div class="chart-container" style="height: 500px;">
+        <canvas id="response-time-chart"></canvas>
+    </div>
+    <h2>Resultados de las Pruebas</h2>
+    <table id="results-table">
+        <thead>
+            <tr>
+                <th>ID de Caso</th>
+                <th>Tipo de Prueba</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Tiempo de Respuesta (ms)</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script src="reports.js"></script>
+    <script>
+        // Datos de los reportes
+        const successfulTests = reports.filter(report => report.status === 'Exitoso').length;
+        const failedTests = reports.filter(report => report.status === 'Fallido').length;
+
+        const positiveTests = reports.filter(report => report.type === 'Positiva').length;
+        const negativeTests = reports.filter(report => report.type === 'Negativa').length;
+        const performanceTests = reports.filter(report => report.type === 'Rendimiento').length;
+
+        // Gráfico de Estado de Pruebas
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        new Chart(statusCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Exitosos', 'Fallidos'],
+                datasets: [{
+                    data: [successfulTests, failedTests],
+                    backgroundColor: ['#4CAF50', '#F44336']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Estado de las Pruebas'
+                }
+            }
+        });
+
+        // Gráfico de Tipo de Pruebas
+        const typeCtx = document.getElementById('typeChart').getContext('2d');
+        new Chart(typeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Positivas', 'Negativas', 'Rendimiento'],
+                datasets: [{
+                    data: [positiveTests, negativeTests, performanceTests],
+                    backgroundColor: ['#2196F3', '#FFC107', '#9C27B0']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Tipos de Pruebas'
+                }
+            }
+        });
+
+        // Gráfico de Tiempos de Respuesta
+        const responseTimeCtx = document.getElementById('response-time-chart').getContext('2d');
+        new Chart(responseTimeCtx, {
+            type: 'bar',
+            data: {
+                labels: reports.map(report => report.id),
+                datasets: [{
+                    label: 'Tiempo de Respuesta (ms)',
+                    data: reports.map(report => report.responseTime),
+                    backgroundColor: '#FF9800'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Tiempos de Respuesta por Caso de Prueba'
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        // Tabla de Resultados
+        const tableBody = document.getElementById('results-table').getElementsByTagName('tbody')[0];
+        reports.forEach(report => {
+            const row = tableBody.insertRow();
+            row.innerHTML = `
+                <td>${report.id}</td>
+                <td>${report.type}</td>
+                <td>${report.description}</td>
+                <td>${report.status}</td>
+                <td>${report.responseTime}</td>
+            `;
+        });
+    </script>
+</body>
+</html>
